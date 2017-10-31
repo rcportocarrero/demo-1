@@ -1,0 +1,972 @@
+<?php
+$usuario = $this->users_acl;
+$usuario_data = $this->data_usuario;
+$no_informacion = 'Sin información';
+$data_ciudad = $this->data_ciudad;
+$a_sexo = [
+    0 => 'Femenino',
+    1 => 'Masculino',
+    999 => 'Sin información',
+];
+$id_departamento = $usuario_data->id_departamento;
+$id_provincia =$usuario_data->id_provincia;
+$id_distrito = $usuario_data->id_distrito;
+if( strlen($id_departamento) === 0 ){
+    $id_departamento = 0;
+    $id_provincia = 0;
+    $id_distrito = 0;
+}
+$des_contacto_nombre = $usuario_data->des_contacto_nombre;
+$id_contacto_nombre = 0;
+if(strlen(trim($des_contacto_nombre)) > 0){
+    $id_contacto_nombre = 1;
+}
+$num_contacto_telefono = $usuario_data->num_contacto_telefono;
+if(is_null($num_contacto_telefono)){
+   //$num_contacto_telefono = 0; 
+   $cod_nro_telefono = '0';
+   $nro_telefono = '';
+}else{
+    if(strlen(trim($num_contacto_telefono)) > 0){
+        $cod_nro_telefono = substr($num_contacto_telefono, 1, 2);
+        $nro_telefono = substr($num_contacto_telefono, 5);
+    }
+}
+
+$opc_correo         = $apps_perfil['datos_personales']['cambio_correo'];
+$opc_contraseña     = $apps_perfil['datos_personales']['cambio_contrasenia'];
+$opc_celular        = $apps_perfil['datos_personales']['cambio_celular'];
+$opc_tel_fijo       = $apps_perfil['datos_personales']['cambio_num_fijo'];
+$opc_ia_direccion       = $apps_perfil['info_adicional']['cambio_direccion'];
+$opc_ia_celular       = $apps_perfil['info_adicional']['cambio_otro_celular'];
+$opc_ia_correo       = $apps_perfil['info_adicional']['cambio_otro_correo'];
+$opc_con_ref       = $apps_perfil['contacto_referencia'];
+
+
+?>
+<script>
+    $(document).ready(function(){
+    $('[data-toggle="tooltip1"]').tooltip({title: "<p style='text-align: justify; padding:10px;'>Si no tienes un número de celular registrado entonces introduce tu número de celular, caso contrario, si deseas modificarlo ingresa el nuevo número de celular.<br /><br />Al momento recibirás un SMS (mensaje de texto) al número de celular con un código de validación.<br /><br />Introduce este código en la misma página, haz clic en confirmar y... ¡ya tienes el celular validado!<br /></p>", html: true});
+    $('[data-toggle="tooltip2"]').tooltip({title: "<br/><p style='text-align: justify; padding:10px;'>Es importante tener el número de celular para poder contactar contigo.</p>", html: true});
+    $('[data-toggle="tooltip3"]').tooltip({title: "<p style='text-align: justify; padding:10px;'>En el momento en el que introduces tu número de celular, te enviamos el SMS de validación. Recibirás el SMS con el código unos segundos después.<br /><br />¿No has recibido el SMS?<br /><br />Espera unos minutos, ya que el plazo de envío puede variar en función de los operadores, y comprueba que puedes recibir SMS. Si has pedido varias veces el envío del código de validación y sigues sin recibirlo, contacta con la línea de atención especificando tu problema.</p>", html: true});
+    });
+</script>
+<div id="div_perfil" class="font-principal">
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 style="font-weight: bold; margin-left: 15px;">Perfil de usuario</h3>            
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <!--<h3 class="panel-title">Datos personales</h3>-->
+                    <label class="panel-title">Datos personales</label>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <b>Nombres:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="control-label">
+                                    <?php echo mb_strtoupper($usuario_data->first_name); ?>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <b>Apellido paterno:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="control-label">
+                                    <?php echo mb_strtoupper($usuario_data->last_name); ?>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <b>Apellido materno:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="control-label">
+                                    <?php echo mb_strtoupper($usuario_data->des_ape_materno); ?>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <b>N° de documento:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="control-label">
+                                    <?php echo $usuario_data->username; ?>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> <b>Sexo:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="control-label">
+                                    <?php echo ($usuario_data->sexo === null || $usuario_data->sexo === '' ) ? $no_informacion : $a_sexo[$usuario_data->sexo]; ?>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <b>Fecha nacimiento:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="control-label">
+                                    <?php echo ($usuario_data->fec_nacimiento === null || $usuario_data->fec_nacimiento === '' ) ? $no_informacion : $usuario_data->fec_nacimiento; ?>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="row_cambio_contrasena">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> <b>Contraseña:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label">***************</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <?php if($opc_contraseña === true){ ?>
+                                <button class="btn boton glyphicon glyphicon-pencil" type="button" id="perfil_btn_cambiar_contrasena" name="perfil_btn_cambiar_contrasena"> <b class="btn boton-ico">Modificar</b></button>
+                                <?php } ?>
+                            </div>
+                        </div>                        
+                        <div id="div_row_cambio_contrasena">
+                            <div class="form-group row_selected">
+                                <div class="col-lg-6">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> <b>Cambiar contraseña</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Ingrese su contraseña anterior:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="password"  class="form-control" id="perfil_pass_clave_old" name="perfil_pass_clave_old" onpaste="return false" maxlength="<?php echo $cambio_config['contrasenias']['max']; ?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Ingrese su nueva contraseña:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="password"  class="form-control" id="perfil_pass_nueva_clave" name="perfil_pass_nueva_clave" onpaste="return false" maxlength="<?php echo $cambio_config['contrasenias']['max']; ?>"/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Confirmar su nueva contraseña:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="password"  class="form-control" id="perfil_pass_nueva_clave_confir" name="perfil_pass_nueva_clave_confir" onpaste="return false"  maxlength="<?php echo $cambio_config['contrasenias']['max']; ?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <button class="btn boton" type="button" id="perfil_row_pass_cancelar" name="perfil_row_pass_cancelar">Cancelar</button>
+                                            <button class="btn boton" type="button" id="perfil_row_pass_guardar" name="perfil_row_pass_guardar">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <div class="panel-alert">
+                                                <h4><b>Importante:</b></h4>
+                                                <p>
+                                                    Para efectuar el cambio de su contraseña actual debes considerar las siguientes reglas:
+                                                </p>
+                                                <p>
+                                                    <ul>
+                                                        <li>La nueva contraseña debe contener solo letras y números.</li>
+                                                        <li>La longitud mínima debe ser de <?php echo $cambio_config['contrasenias']['min']; ?> caracteres.</li>
+                                                        <li>La longitud máxima debe ser de <?php echo $cambio_config['contrasenias']['max']; ?> caracteres.</li>
+                                                        <li>No debe ser igual a su número de documento de identidad.</li>
+                                                        <?php echo (intval($apps_usuario['general']['ultimas_claves']) > 1) ? '<li>La nueva contraseña debe ser diferente a las últimas '.$apps_usuario['general']['ultimas_claves'] .' contraseñas ingresadas anteriormente.</li>' : '<li>La nueva contraseña debe ser diferente a la última contraseña ingresada anteriormente.</li>'; ?>
+                                                        
+                                                    </ul>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="died_hr">
+                                </div>
+                            </div>                            
+                        </div>
+                        
+                        <div class="form-group" id="row_cambio_correo">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <b>Correo electrónico:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label" >
+                                    <?php echo ($usuario_data->email === null || $usuario_data->email === '' || empty($usuario_data->email)) ? $no_informacion : $usuario_data->email; ?>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <?php if($opc_correo === true){ ?>
+                                <button class="btn boton glyphicon glyphicon-pencil" type="button" id="perfil_btn_cambiar_correo" name="perfil_btn_cambiar_correo"> <b class="btn boton-ico"><?php echo ($usuario_data->email === null || $usuario_data->email === '' || empty($usuario_data->email)) ? "Agregar" : "Modificar" ?></b></button>
+                                <?php } ?>
+                            </div>                            
+                            <?php if( (int)$usuario_data->solicitudes_pendientes > 0 ){?>
+                                <div class="col-lg-12"> 
+                                    <div class="col-lg-3">                                     
+                                    </div>    
+                                    <div class="col-lg-6"> 
+                                        <label class="control-label lbl-alert" >
+                                            Tiene solicitudes pendientes por validar para cambio de correo electr&oacute;nico.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12"> 
+                                    <div class="col-lg-3">                                     
+                                    </div>                                    
+                                    <div class="col-lg-6"> 
+                                        </br>
+                                        <div class="form-group">
+                                            <div class="panel-alert">                                                
+                                                <b>Importante:</b> Si usted ya valid&oacute; su nueva cuenta de correo, haga clic en <a href="#" data-placement="justify" id="perfil_correo_refrescar" name="perfil_correo_refrescar" ><span class="glyphicon glyphicon-refresh" style=" font-size: 20px; " aria-hidden="true"></span></a> para refrescar.                                                                                             
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>  
+                        </div>
+                        <div id="div_row_cambio_correo">
+                            <div class="form-group row_selected">
+                                <div class="col-lg-6">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <b><?php echo ($usuario_data->email === null || $usuario_data->email === '' || empty($usuario_data->email)) ? "Agregar" : "Modificar" ?> correo electr&oacute;nico</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <?php if($usuario_data->email != null || $usuario_data->email != '' || !empty($usuario_data->email)){ ?>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Correo electr&oacute;nico actual:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="email" class="form-control" id="perfil_correo_old" name="perfil_correo_old" value="<?php echo $usuario_data->email; ?>" readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Ingrese su nuevo correo electr&oacute;nico:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input class="form-control" id="perfil_correo_nuevo" name="perfil_correo_nuevo" autocomplete="off" onpaste="return false" maxlength="<?php echo $cambio_config['general']['correo']; ?>" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Confirmar su nuevo correo electr&oacute;nico:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input class="form-control" id="perfil_correo_nuevo_confir" name="perfil_correo_nuevo_confir" autocomplete="off" onpaste="return false" maxlength="<?php echo $cambio_config['general']['correo']; ?>" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <button class="btn boton" type="button" id="perfil_row_correo_cancelar" name="perfil_row_correo_cancelar">Cancelar</button>
+                                            <button class="btn boton" type="button" id="perfil_row_correo_guardar" name="perfil_row_correo_guardar">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="died_hr">
+                                </div>
+                            </div>                            
+                        </div>
+                        
+                        <div class="form-group" id="row_cambio_celular">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-phone" aria-hidden="true"></span> <b>Número de celular:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <?php echo ($usuario_data->celular === null || $usuario_data->celular === '' ) ? $no_informacion : $usuario_data->celular; ?>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <?php if($opc_celular === true){ ?>
+                                    <button class="btn boton glyphicon glyphicon-pencil" type="button" id="perfil_btn_cambiar_celular" name="perfil_btn_cambiar_celular"> <b class="btn boton-ico"><?php echo ($usuario_data->celular === null || $usuario_data->celular === '' ) ? "Agregar" : "Modificar" ?></b></button>
+                                <?php } ?>
+                            </div>                                                      
+                        </div>
+                        <div id="div_row_cambio_celular">
+                            <div class="form-group row_selected">
+                                <div class="col-lg-6">                                    
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-phone" aria-hidden="true"></span> <b><?php echo ($usuario_data->celular === null || $usuario_data->celular === '' ) ? "Agregar" : "Modificar" ?> n&uacute;mero de celular</b>
+                                    </label>                                    
+                                </div>
+                            </div>    
+                            <div class="form-group">
+                                <div id="div_cambio_celular">
+                                    <?php if($usuario_data->celular != null || $usuario_data->celular != '' ){ ?>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="col-lg-3">
+                                                <label class="control-label">
+                                                    N&uacute;mero de celular actual:
+                                                </label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="celular" class="form-control" id="perfil_celular_old" name="perfil_celular_old" value="<?php echo $usuario_data->celular; ?>" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="col-lg-3">
+                                                <label class="control-label">
+                                                    Ingrese su nuevo n&uacute;mero de celular:
+                                                </label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input class="form-control" id="perfil_celular_nuevo" name="perfil_celular_nuevo" maxlength="<?php echo $cambio_config['general']['celular']; ?>"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-8">
+                                                <button class="btn boton" type="button" id="perfil_row_celular_cancelar" name="perfil_row_celular_cancelar">Cancelar</button>
+                                                <button class="btn boton" type="button" id="perfil_row_celular_guardar" name="perfil_row_celular_guardar">Guardar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="div_cambio_celular_confirma">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="col-lg-3">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label class="control-label" style="text-align: justify;">
+                                                    Para confirmar la actualizaci&oacute;n de los datos ingrese el c&oacute;digo de validaci&oacute;n que recibi&oacute; en el mensaje de texto. Puede que el c&oacute;digo de validaci&oacute;n tarde unos minutos en llegarle.
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="col-lg-3">
+                                                <label class="control-label">
+                                                    Ingrese su c&oacute;digo de validaci&oacute;n
+                                                </label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input class="form-control" id="perfil_codigo_valcel" name="perfil_codigo_valcel" maxlength="<?php echo $cambio_config['general']['token_sms']; ?>"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-8">
+                                                <button class="btn boton" type="button" id="perfil_row_celular_ccancelar" name="perfil_row_celular_ccancelar">Cancelar</button>
+                                                <button class="btn boton" type="button" id="perfil_row_celular_confirmar" name="perfil_row_celular_confirmar">Confirmar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <div class="panel-alert">
+                                                <h4><b>Importante:</b></h4>
+                                                <p style="font-size:14px;">Preguntas sobre el cambio de número de celular:</p> 
+                                                <p class="p_opciones"><a href="#" class="msgflotante" data-toggle="tooltip1" data-placement="right" >- ¿Cómo se realiza el cambio?</a></p>
+                                                <p class="p_opciones"><a href="#" class="msgflotante" data-toggle="tooltip2" data-placement="right" >- ¿Por qué es importante registrar mi celular?</a></p>
+                                                <p class="p_opciones"><a href="#" class="msgflotante" data-toggle="tooltip3" data-placement="right" >- ¿Y si no recibo el SMS de validación?</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="died_hr">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="row_cambio_telefono">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> <b>N&uacute;mero de tel&eacute;fono fijo:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <?php echo ($usuario_data->telefono === null || $usuario_data->telefono === '' ) ? $no_informacion : $usuario_data->telefono; ?>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <?php if($opc_tel_fijo === true){ ?>
+                                <button class="btn boton glyphicon glyphicon-pencil" type="button" id="perfil_btn_cambiar_telefono" name="perfil_btn_cambiar_telefono"> <b class="btn boton-ico"><?php echo ($usuario_data->telefono === null || $usuario_data->telefono === '' ) ? "Agregar" : "Modificar" ?></b></button>
+                                <?php if($usuario_data->telefono != null || $usuario_data->telefono != '' ){ ?>
+                                    <button class="btn boton glyphicon glyphicon-remove" type="button" id="perfil_btn_eliminar_telefono" name="perfil_btn_eliminar_telefono"> <b class="btn boton-ico">Eliminar</b></button>
+                                <?php }
+                                
+                                } ?>
+                                
+                            </div>
+                        </div>
+                        <div id="div_row_cambio_telefono">
+                            <div class="form-group row_selected">
+                                <div class="col-lg-6">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> <b><?php echo ($usuario_data->telefono === null || $usuario_data->telefono === '' ) ? "Agregar" : "Modificar" ?> n&uacute;mero de tel&eacute;fono fijo</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <?php if($usuario_data->telefono != null || $usuario_data->telefono != '' ){ ?>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                N&uacute;mero de tel&eacute;fono fijo actual:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="telefono" class="form-control" id="perfil_telefono_old" name="perfil_telefono_old" value="<?php echo $usuario_data->telefono; ?>" readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Ingrese su nuevo n&uacute;mero de tel&eacute;fono fijo:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <select class="form-control" id="perfil_lista_codigo_ciudad">
+                                                <option value="0" selected >--- Seleccione Ciudad ---</option>
+                                                <?php
+                                                foreach ($data_ciudad as $ciudad){
+                                                    ?>
+                                                    <option value="<?php echo $ciudad->id; ?>"><?php echo $ciudad->descripcion; ?></option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                            <div class="col-lg-12">
+                                                <label class="control-label">(Código de Ciudad)</label>
+                                            </div>                                            
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="text"  class="form-control" id="perfil_telefono_nuevo" name="perfil_telefono_nuevo" maxlength="<?php echo $cambio_config['general']['telefono_fijo']['max']; ?>" />
+                                            <div class="col-lg-12">
+                                                <label class="control-label">(Número)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <button class="btn boton" type="button" id="perfil_row_telefono_cancelar" name="perfil_row_telefono_cancelar">Cancelar</button>
+                                            <button class="btn boton" type="button" id="perfil_row_telefono_guardar" name="perfil_row_telefono_guardar">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="died_hr">
+                                </div>
+                            </div>                            
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!--<h3>Información adicional</h3>-->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <!--<h3 class="panel-title">Información adicional</h3>-->
+                    <label class="panel-title">Información adicional</label> <label style=" font-size: 14px;">(opcional)</label>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+
+                        <div class="form-group" id="row_cambio_direccion">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span> <b>Direcci&oacute;n:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label" >
+                                    <?php 
+                                    $ubigeo = '';
+                                    if((int)$id_departamento !== 0 && (int)$id_provincia !== 0 && (int)$id_distrito !== 0 ){
+                                        $ubigeo = $data_departamento[(int)$id_departamento-1]->descripcion.' / '.$data_provincia[(int)$id_provincia-1]->descripcion.' / '.$data_distrito[(int)$id_distrito-1]->descripcion;
+                                    }                                    
+                                    $direccion = $usuario_data->des_direccion;
+                                    $referencia = $usuario_data->des_referencia;
+                                    if($ubigeo != '' || $direccion != ''){
+                                        if($usuario_data->des_referencia === null || $usuario_data->des_referencia === ''){
+                                            $dir_usuario = $ubigeo.' - '.$direccion;
+                                        }else{
+                                            $dir_usuario = $ubigeo.' - '.$direccion.' Referencia: '.$referencia;
+                                        }    
+                                    }else{
+                                        $dir_usuario = $no_informacion;
+                                    }                                        
+                                    echo $dir_usuario; ?>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <?php if($opc_ia_direccion === true){ ?>
+                                <button class="btn boton glyphicon glyphicon-pencil" type="button" id="perfil_btn_cambiar_direccion" name="perfil_btn_cambiar_direccion"> <b class="btn boton-ico"><?php echo ($usuario_data->des_direccion === null || $usuario_data->des_direccion === '' ) ? "Agregar" : "Modificar" ?></b></button>
+                                <?php if($usuario_data->des_direccion != null || $usuario_data->des_direccion != '' ){ ?>
+                                    <button class="btn boton glyphicon glyphicon-remove" type="button" id="perfil_btn_eliminar_direccion" name="perfil_btn_eliminar_direccion"> <b class="btn boton-ico">Eliminar</b></button>
+                                <?php } }?>
+                            </div>
+                        </div>
+                        <div id="div_row_cambio_direccion">
+                            <div class="form-group row_selected">
+                                <div class="col-lg-6">
+                                    <label class="control-label" >
+                                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span> <b><?php echo ($usuario_data->des_direccion === null || $usuario_data->des_direccion === '' ) ? "Agregar" : "Modificar" ?> direcci&oacute;n</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Ingrese su nueva direcci&oacute;n:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <select class="form-control" id="perfil_lista_departamento">
+                                                <option value="0" >--- Seleccione Departamento ---</option>
+                                                <?php
+                                                foreach ($data_departamento as $departamento){
+                                                    ?>
+                                                    <option value="<?php echo $departamento->id; ?>"><?php echo $departamento->descripcion; ?></option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                            <div class="col-lg-12">
+                                                <label class="control-label">(Departamento)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <select class="form-control" id="perfil_lista_provincia">
+                                                <option value="0" selected >--- Seleccione Provincia ---</option>
+                                            </select>       
+                                            <div class="col-lg-12">
+                                                <label class="control-label">(Provincia)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <select class="form-control" id="perfil_lista_distrito">
+                                                <option value="0" selected >--- Seleccione Distrito ---</option>
+                                            </select>   
+                                            <div class="col-lg-12">
+                                                <label class="control-label">(Distrito)</label>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <div class="col-lg-2">
+                                                <label class="control-label">Dirección:</label>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" id="perfil_direccion_nuevo" name="perfil_direccion_nuevo" maxlength="<?php echo $cambio_config['general']['direccion_domicilio']['max']; ?>"  value="<?php echo $usuario_data->des_direccion; ?>"/>                                            
+                                            </div>  
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <div class="col-lg-2">
+                                                <label class="control-label">Referencia:</label>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" id="perfil_referencia_nuevo" name="perfil_referencia_nuevo" maxlength="<?php echo $cambio_config['general']['direccion_domicilio']['max']; ?>"  value="<?php echo $usuario_data->des_referencia; ?>"/>                                            
+                                            </div>  
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <button class="btn boton" type="button" id="perfil_row_direccion_cancelar" name="perfil_row_direccion_cancelar">Cancelar</button>
+                                            <button class="btn boton" type="button" id="perfil_row_direccion_guardar" name="perfil_row_direccion_guardar">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="died_hr">
+                                </div>
+                            </div>                            
+                        </div>
+                        
+                        <div class="form-group" id="row_cambio_celular_alternativo">
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <span class="glyphicon glyphicon-phone" aria-hidden="true"></span> <b>Otro n&uacute;mero de celular:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <?php echo ($usuario_data->celular_alterno === null || $usuario_data->celular_alterno === '' ) ? $no_informacion : $usuario_data->celular_alterno; ?>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <?php if($opc_ia_celular === true){ ?>
+                                <button class="btn boton glyphicon glyphicon-pencil" type="button" id="perfil_btn_cambiar_celular_alternativo" name="perfil_btn_cambiar_celular_alternativo"> <b class="btn boton-ico"><?php echo ($usuario_data->celular_alterno === null || $usuario_data->celular_alterno === '' ) ? "Agregar" : "Modificar" ?></b></button>
+                                <?php if($usuario_data->celular_alterno != null || $usuario_data->celular_alterno != '' ){ ?>
+                                    <button class="btn boton glyphicon glyphicon-remove" type="button" id="perfil_btn_eliminar_celular_alternativo" name="perfil_btn_eliminar_celular_alternativo"> <b class="btn boton-ico">Eliminar</b></button>
+                                <?php } }?>
+                            </div>
+                        </div>
+                        <div id="div_row_cambio_celular_alternativo">
+                            <div class="form-group row_selected">
+                                <div class="col-lg-6">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-phone" aria-hidden="true"></span> <b><?php echo ($usuario_data->celular_alterno === null || $usuario_data->celular_alterno === '' ) ? "Agregar" : "Modificar" ?> n&uacute;mero de celular alternativo</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <?php if($usuario_data->celular_alterno != null || $usuario_data->celular_alterno != '' ){ ?>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Otro n&uacute;mero de celular actual:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="celular" class="form-control" id="perfil_celular_alternativo_old" name="perfil_celular_alternativo_old" value="<?php echo $usuario_data->celular_alterno; ?>" readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php } ?>                                
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label" >
+                                                Ingrese otro n&uacute;mero de celular:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input class="form-control" id="perfil_celular_alternativo_nuevo" name="perfil_celular_alternativo_nuevo" maxlength="<?php echo $cambio_config['general']['celular']; ?>"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <button class="btn boton" type="button" id="perfil_row_celular_alternativo_cancelar" name="perfil_row_celular_alternativo_cancelar">Cancelar</button>
+                                            <button class="btn boton" type="button" id="perfil_row_celular_alternativo_guardar" name="perfil_row_celular_alternativo_guardar">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="died_hr">
+                                </div>
+                            </div>                            
+                        </div>
+
+                        <div class="form-group" id="row_cambio_correo_alternativo">
+                            <div class="col-lg-3">
+                                <label class="control-label" >
+                                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <b>Otro correo electr&oacute;nico:</b>
+                                </label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label class="control-label">
+                                    <?php echo ($usuario_data->email_alternativo === null || $usuario_data->email_alternativo === '' ) ? $no_informacion : $usuario_data->email_alternativo; ?>
+                                </label>
+                            </div>
+                            <div class="col-lg-6">
+                                <?php if($opc_ia_correo === true){ ?>
+                                <button class="btn boton glyphicon glyphicon-pencil" type="button" id="perfil_btn_cambiar_correo_alternativo" name="perfil_btn_cambiar_correo_alternativo"> <b class="btn boton-ico"><?php echo ($usuario_data->email_alternativo === null || $usuario_data->email_alternativo === '' ) ? "Agregar" : "Modificar" ?></b></button>
+                                <?php if($usuario_data->email_alternativo != null || $usuario_data->email_alternativo != '' ){ ?>
+                                    <button class="btn boton glyphicon glyphicon-remove" type="button" id="perfil_btn_eliminar_correo_alternativo" name="perfil_btn_eliminar_correo_alternativo"> <b class="btn boton-ico">Eliminar</b></button>
+                                <?php } }?>
+                            </div>
+                        </div>
+                        <div id="div_row_cambio_correo_alternativo">
+                            <div class="form-group row_selected">
+                                <div class="col-lg-6">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <b><?php echo ($usuario_data->email_alternativo === null || $usuario_data->email_alternativo === '' ) ? "Agregar" : "Modificar" ?> correo electr&oacute;nico alternativo</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <?php if($usuario_data->email_alternativo != null || $usuario_data->email_alternativo != '' ){ ?>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">
+                                                Otro correo electr&oacute;nico actual:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="text"  class="form-control" id="perfil_correo_alternativo_old" maxlength="<?php echo $cambio_config['general']['correo']; ?>" name="perfil_correo_alternativo_old" value="<?php echo $usuario_data->email_alternativo; ?>" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label" >
+                                                Ingrese otro correo electr&oacute;nico:
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="text"  class="form-control" id="perfil_correo_alternativo_nuevo" name="perfil_correo_alternativo_nuevo" maxlength="<?php echo $cambio_config['general']['correo']; ?>" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <button class="btn boton" type="button" id="perfil_row_correo_alternativo_cancelar" name="perfil_row_correo_alternativo_cancelar">Cancelar</button>
+                                            <button class="btn boton" type="button" id="perfil_row_correo_alternativo_guardar" name="perfil_row_correo_alternativo_guardar">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="died_hr">
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <!--<h3 class="panel-title">Contacto de referencia</h3>-->
+                    <label class="panel-title">Contacto de referencia</label>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        
+                        <div class="form-group" id="row_cambio_contacto_referencia">
+                            <div class="form-group col-lg-12">
+                                <div class="col-lg-3">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <b>Nombres:</b>
+                                    </label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label class="control-label">
+                                        <?php echo ($usuario_data->des_contacto_nombre === null || $usuario_data->des_contacto_nombre === '' ) ? $no_informacion : $usuario_data->des_contacto_nombre; ?>
+                                    </label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <?php if($opc_con_ref === true){ ?>
+                                    <button class="btn boton glyphicon glyphicon-pencil" type="button" id="perfil_btn_cambiar_contacto_referencia" name="perfil_btn_cambiar_contacto_referencia"> <b class="btn boton-ico"><?php echo ($usuario_data->des_contacto_nombre === null || $usuario_data->des_contacto_nombre === '' ) ? "Agregar" : "Modificar" ?></b></button>
+                                    <?php if($usuario_data->des_contacto_nombre != null || $usuario_data->des_contacto_nombre != '' ){ ?>
+                                        <button class="btn boton glyphicon glyphicon-remove" type="button" id="perfil_btn_eliminar_contacto_referencia" name="perfil_btn_eliminar_contacto_referencia"> <b class="btn boton-ico">Eliminar</b></button>
+                                    <?php } }?>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <div class="col-lg-3">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-phone" aria-hidden="true"></span> <b>N&uacute;mero de celular:</b>
+                                    </label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label class="control-label">
+                                        <?php echo ($usuario_data->num_contacto_celular === null || $usuario_data->num_contacto_celular === '' ) ? $no_informacion : $usuario_data->num_contacto_celular; ?>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <div class="col-lg-3">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> <b>N&uacute;mero de tel&eacute;fono fijo:</b>
+                                    </label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label class="control-label">
+                                        <?php echo ($usuario_data->num_contacto_telefono === null || $usuario_data->num_contacto_telefono === '' ) ? $no_informacion : $usuario_data->num_contacto_telefono; ?>
+                                    </label>
+                                </div>
+                            </div>            
+                        </div>                        
+                        <div id="div_row_cambio_contacto_referencia">
+                            <div class="form-group row_selected">
+                                <div class="col-lg-6">
+                                    <label class="control-label">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <b><?php echo ($usuario_data->des_contacto_nombre === null || $usuario_data->des_contacto_nombre === '' ) ? "Agregar" : "Modificar" ?> nombres de contacto</b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label" >Ingrese un nombre de contacto:</label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="text" class="form-control" id="perfil_nombre_referencia_nuevo" name="perfil_nombre_referencia_nuevo" 
+                                                   maxlength="<?php echo $cambio_config['general']['nombre_contacto']['max']; ?>" 
+                                                   value="<?php echo $usuario_data->des_contacto_nombre; ?>" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">Ingrese un n&uacute;mero de celular:</label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="text"  class="form-control" id="perfil_celular_referencia_nuevo" name="perfil_celular_referencia_nuevo" 
+                                                   maxlength="<?php echo $cambio_config['general']['celular']; ?>" value="<?php echo $usuario_data->num_contacto_celular; ?>" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3">
+                                            <label class="control-label">Ingrese un tel&eacute;fono fijo:</label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <select class="form-control" id="perfil_lista_codigo_ciudad_referencia">
+                                                <option value="0" selected >--- Seleccione Ciudad ---</option>
+                                                <?php
+                                                foreach ($data_ciudad as $ciudad){
+                                                ?>
+                                                    <option value="<?php echo $ciudad->id; ?>"><?php echo $ciudad->descripcion; ?></option>
+                                                <?php
+                                                }
+                                                ?>
+                                            </select>
+                                            <div class="col-lg-12">
+                                                <label class="control-label">(Código de Ciudad)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="text"  class="form-control" id="perfil_telefono_referencia_nuevo" name="perfil_telefono_referencia_nuevo" maxlength="<?php echo $cambio_config['general']['telefono_fijo']['max']; ?>"/>
+                                            <div class="col-lg-12">
+                                                <label class="control-label">(Número)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <div class="col-lg-3"></div>
+                                        <div class="col-lg-8">
+                                            <button class="btn boton" type="button" id="perfil_row_contacto_referencia_cancelar" name="perfil_row_contacto_referencia_cancelar">Cancelar</button>
+                                            <button class="btn boton" type="button" id="perfil_row_contacto_referencia_guardar" name="perfil_row_contacto_referencia_guardar">Guardar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="died_hr">
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input id='id_departamento' type="hidden" value="<?php echo $id_departamento; ?>">
+    <input id='id_provincia' type="hidden" value="<?php echo $id_provincia; ?>">
+    <input id='id_distrito' type="hidden" value="<?php echo $id_distrito; ?>">
+    <input id='id_contacto_nombre' type="hidden" value="<?php echo $id_contacto_nombre; ?>">
+    <input id='cod_nro_telefono' type="hidden" value="<?php echo $cod_nro_telefono; ?>">
+    <input id='nro_telefono' type="hidden" value="<?php echo $nro_telefono; ?>">
+</div>
+

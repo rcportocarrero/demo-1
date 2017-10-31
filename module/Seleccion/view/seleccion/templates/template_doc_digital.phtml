@@ -1,0 +1,131 @@
+<?php
+$base_url = $this->basePath();
+?>
+<style type="text/css">
+    #wrap_formato{
+        background-color: #FFF;
+        overflow: hidden;
+        margin-bottom: 150px;
+        width: 1050px;
+        font-family: tahoma;
+    }
+
+    /*    #wrap_formato h1{
+            font-size: 16px;
+            text-align: center;
+            margin: 15px 20px;
+        }
+    
+        #wrap_formato #tbl_header{
+            width: 95%;
+            margin: 5px 20px 20px 20px;
+        }
+    
+        #wrap_formato #table {
+            display: table;
+            width: 98%;
+            background: #fff;
+            margin: 0 auto;
+            box-sizing: border-box;
+            border-spacing: 0;
+            border-collapse: separate;
+        }
+    
+        #wrap_formato #table th{
+            background: rgb(205,206,211);
+            color: #333;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    
+        #wrap_formato #table td{
+            background: rgb(243,243,245);
+            color: rgb(66,66,66);
+            font-size: 12px;
+        }
+    
+        #wrap_formato #table th,
+        #wrap_formato #table td{
+            border: 1px solid #c3c3c3;
+            padding: 2px 4px;
+        }
+        #wrap_formato #table th.blank,
+        #wrap_formato #table td.blank{
+            border: 0;
+            background: none;
+        }
+    
+        #wrap_formato #table th.blank_head,
+        #wrap_formato #table td.blank_head{
+            border-bottom: 0;
+        }*/
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even){background-color: #f2f2f2}
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+
+<div id="wrap_formato">
+    <table style="width: 95%;">
+        <tbody>
+            <tr>
+                <td style="width:50%;text-align:center;">
+                    <img  width="200px" src="<?php echo $base_url; ?>/img/indago.png"/>
+                </td>
+                <td style="width:50%;text-align:center;">
+                    <img src="<?php echo $base_url; ?>/img/logo-minedu.png" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table style="margin: 5px 10px 0px 10px; width: 95%;">
+        <tbody>
+            <tr>
+                <td style="text-align: center;"><h1>LISTA DE INSTRUMENTOS</h1>         
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="tbl_header">
+        <thead>
+            <tr>
+                <th><b>Nombre de instrumento</b></th>
+                <th><b>Meta</b></td>
+                <th><b>Informantes</b></th>
+                <th><b>Estado</b></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        
+//        var_dump($datos_instrumento);
+        foreach ($datos_instrumento as $lis) {
+            ?>
+        <tr>
+            <td> <?= $lis['b'] ?> </td> 
+            <td> <?= $lis['t'] ?> </td>
+            <td> <?= $lis['i'] ?> </td>
+            <td> <?= $lis['n'] ?> </td>
+          </tr>  
+            <?php
+        }
+        ?>  
+        </tbody>
+    </table>
+
+
+</div>

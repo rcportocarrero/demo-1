@@ -1,0 +1,29 @@
+<script id="tpl_listado_resumen_content" type="text/x-handlebars-template"> 
+<input type="hidden" id="emp_t_hd" id="emp_t_hd" value="" />
+    <div class="row">
+	<div class="col col-sm-6" id="emp_t_informante" style="margin-bottom: 15px;"> </div> 
+        <div class="col col-sm-6" id="emp_t_ndoc" style="margin-bottom: 15px;">  </div>
+        <div class="col col-sm-12" id="emp_t_dreugel" style="margin-bottom: 15px;">  </div>
+        <div class="col col-sm-12" id="emp_t_ie" style="margin-bottom: 15px;">  </div>        
+	<div class="col col-sm-4">    
+    	    <ul class="nav nav-tabs2 nav-stacked text-center" id="ul_preg" role="tablist">
+                <li id="li_resumen" role="presentation" class="active"><a href="#paso_resumen" aria-controls="paso_resumen" role="tab" data-toggle="tab" style="font-size:13px; text-align:left;">RESUMEN</a></li>
+            </ul>
+        </div>
+		
+        <div class="col col-sm-8">
+            <div class="row tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="paso_resumen">
+                    {{#instrumento.p}}
+                        <div class="col-md-12" style="padding:5px;">{{b}}</div>
+                        <div class="col-md-12" data-li="{{a}}" style="padding:5px;">
+                        {{#f}}
+                            <a href="javascript:" onclick="link_group('{{c}}');" id="res_pre_{{a}}" class="btn btn-info" role="button">{{e}}</a> 
+                        {{/f}}
+                        </div>
+                    {{/instrumento.p}}
+		</div>
+            </div>
+        </div>  
+    </div>  
+</script>

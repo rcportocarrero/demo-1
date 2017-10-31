@@ -1,0 +1,22 @@
+{
+    "menu": {
+        "items": [
+            {
+                "id": "menuConfigInstrumentos",
+                "metodo": "menu_config_instrumentos",
+                "titulo": "Configuración de Instrumentos"
+            },
+            {
+                "id": "menuConfigInformantes",
+                "metodo": "menu_config_informantes",
+                "titulo": "Configuración de Informantes"
+            },
+            {
+                "id": "menuConfigProgramacion",
+                "metodo": "menu_config_programacion",
+                "titulo": "Configuración de Programación de Instrumentos"
+            } 
+        ]
+    }
+}
+

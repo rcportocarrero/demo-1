@@ -1,0 +1,154 @@
+<style>
+    .form-horizontal .form-group {
+        margin-left: 0px !important; 
+        margin-right: 0px !important; 
+    }
+    @media (max-width: 575px) { 
+        .padd_left{
+            padding-left: 15px !important;
+        }
+    }
+
+    @media (min-width: 768px){
+        .padd_left{
+            padding-left: 22px !important;
+        }
+
+    }
+
+
+    .lbl-lite{
+        font-weight: initial;        
+    }
+
+</style>
+
+<?php
+$base_url = $this->basePath();
+$datos_ins = $datos[0];
+?>
+<div class="row" style="margin-top: 10px;">
+    <div class="col-xs-6">
+        <ol class="breadcrumb">
+            <li><a href="">Inicio</a></li>
+            <li><a href="<?php echo $this->url('inicio', array('action' => 'index')); ?>">Instrumentos</a></li>
+            <li class="active">Detalle</li>
+        </ol>
+    </div>   
+    <div class="col-xs-6" style="text-align: right;">
+        <a class="btn boton" href="<?php echo $this->url('inicio', array('action' => 'index')); ?>"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span> Atrás</a> 
+        <span class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color: #8D8C8C;"></span>
+    </div> 
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Informantes por instrumento</div>
+            <div class="panel-body">
+                <form class="form-horizontal" id="frm_instrumento_det">           
+                    <div class="form-group">
+                        <label class="control-label-login col-sm-2"><b>Nombre de instrumento:</b></label>
+                        <label class="control-label col-sm-10" style="font-weight: initial;"><?= $datos_ins['NOMBRE'] ?></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label-login col-sm-2">DRE:</label>
+                        <div class="col-sm-4">
+                            <select name="lista_dre" id="lista_dre" class="form-control">
+                                <option value="">--Seleccione--</option>
+                                <?php
+                                foreach ($lista_dre as $e) {
+                                    ?>
+                                    <option value="<?php echo $e['ID_DRE']; ?>"><?php echo $e['NOMBRE']; ?></option>
+                                    <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <label class="control-label-login col-sm-2">UGEL:</label>
+                        <div class="col-sm-4">
+                            <select name="lista_ugel" id="lista_ugel" class="form-control">
+                                <option value="">--Seleccione--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label-login col-sm-2" for="srch-iiee">Institución educativa:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="srch-iiee" id="srch-iiee" maxlength="100">
+                        </div>
+                        <label class="control-label-login col-sm-2" for="srch-name">Nombres y apellidos:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="srch-name" id="srch-name" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label-login col-sm-2" for="srch-ndoc">DNI:</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="srch-ndoc" id="srch-ndoc" maxlength="8">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-5">
+                        </div>
+                        <div class="col-md-7 text-right">
+                            <button type="button" class="btn btn-login" id="btn_search_ins_det" name="btn_search_ins_det">
+                                <span class="glyphicon glyphicon-search"></span>
+                                BUSCAR</button>
+                            <button type="button" class="btn btn-login" id="btn_limpiar_ins_det" name="btn_limpiar_ins_det">
+                                <span class="glyphicon glyphicon-erase"></span>
+                                LIMPIAR</button>
+                        </div>
+                    </div> 
+                </form>
+                <br>
+                <br>
+
+                <?= file_get_contents(__DIR__ . '/formato_hb.html'); ?>
+                <?= file_get_contents(__DIR__ . '/formato_pv.html'); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" style="font-size:20px; margin-bottom:15px;text-align:right;">
+            <!--<a href="#"><span class="fa fa-file-excel-o"></span></a>-->
+            <a href="<?php echo $base_url;?>/seleccion/index/pdfdwdet" target="_blank"><span class="fa fa-file-pdf-o"></span></a>               
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Resultados de la búsqueda
+            </div>
+
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <table id="grid_instrumentos_detail">
+                    </table>
+                    <div id="pager_grid_instrumentos_detail"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_preguntas_tmp" aria-hidden="true" style="overflow-y: hidden">
+    <div class="modal-dialog modal-lg" style="min-width: 200px; ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Aplicación de instrumento</h4>
+            </div>
+            <div class="modal-body" style="height: 700px;display: block;overflow-y: auto ;">
+                <div id="content_out">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

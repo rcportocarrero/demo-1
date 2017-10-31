@@ -1,0 +1,31 @@
+<?php
+$usuario = $this->users_acl->rows;
+?>
+<ul class="nav nav-sidebar left_menu">
+    <?php
+    $str_datos = file_get_contents(getcwd() . "/public/perfil/" . $usuario->ruta);
+    $json = json_decode($str_datos);
+    $parrafos = count($json);
+    for ($i = 0; $i < $parrafos; $i++) {
+        $parrafo = $json[$i];
+        if ($parrafo->collapsible) {
+            
+            
+            echo '<li class="dropdown" data-function-handle="mnuCollapsible">';
+            echo '<a class="dropdown-toggle nav-menu-user"  data-toggle="dropdown" href="#">' . $parrafo->titulo . ' <span class="glyphicon glyphicon-chevron-down"></span></a>';
+            echo '<ul class="dropdown-menu left_menu" >';
+            foreach ($parrafo->opciones as $listas) {
+                echo '<li id="' . $listas->id . '" data-function-handle="' . $listas->metodo . '"><a href="#">' . $listas->titulo . '</a></li>';
+            }
+            echo '</ul>';
+            echo '</li>';
+        } else {
+            foreach ($parrafo->menu as $menu) {
+                foreach ($menu->items as $itm) {
+                    echo '<li id="' . $itm->id . '" data-function-handle="' . $itm->metodo . '">' . $itm->titulo . ' <span class="glyphicon glyphicon-chevron-right"></span></li>';
+                }
+            }
+        }
+    }
+    ?>
+</ul>

@@ -1,0 +1,21 @@
+<?php
+$date_fin = new DateTime(date($fec_fin_proc));
+?>
+
+<div id="div_consulta" class="font-principal">
+    
+    <div id="div_titulo" class="row">
+        <div class="titulo_principal col-lg-12">
+            &nbsp;&nbsp;&nbsp;<?php echo $apps_var['name_app']; ?>
+        </div>
+    </div>
+    
+    <div id="div_mensaje" class="row">
+        <div class="col-lg-12">   
+            <h3>
+            El proceso de <?php echo $apps_var['name_app']; ?> ha culminado el <?php echo $date_fin->format('d-m-Y'); ?>.
+        </h3>
+        </div>    
+    </div>
+    
+</div>    

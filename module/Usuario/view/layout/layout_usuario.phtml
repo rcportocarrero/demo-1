@@ -1,0 +1,142 @@
+<?php
+$apps_var = $this->apps_user;
+$apps_var_usuario = $this->apps_config_caracteres;
+$base_url = $this->basePath();
+
+
+function detect()
+{
+    $browser = array("IE", "OPERA", "MOZILLA", "NETSCAPE", "FIREFOX", "SAFARI", "CHROME");
+    $os = array("WIN", "MAC", "LINUX");
+
+    # definimos unos valores por defecto para el navegador y el sistema operativo
+    $info['browser'] = "OTHER";
+    $info['os'] = "OTHER";
+
+    # buscamos el navegador con su sistema operativo
+    foreach ($browser as $parent)
+    {
+        $s = strpos(strtoupper($_SERVER['HTTP_USER_AGENT']), $parent);
+        $f = $s + strlen($parent);
+        $version = substr($_SERVER['HTTP_USER_AGENT'], $f, 15);
+        $version = preg_replace('/[^0-9,.]/', '', $version);
+        if ($s)
+        {
+            $info['browser'] = $parent;
+            $info['version'] = $version;
+        }
+    }
+
+    # obtenemos el sistema operativo
+    foreach ($os as $val)
+    {
+        if (strpos(strtoupper($_SERVER['HTTP_USER_AGENT']), $val) !== false)
+            $info['os'] = $val;
+    }
+
+    # devolvemos el array de valores
+    return $info;
+}
+
+$info = detect();
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Login, registration forms">
+        <meta name="author" content="">
+        <title>AP Móvil - Login</title>
+        <link rel="shortcut icon" href="<?php echo $base_url; ?>/img/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="<?php echo $base_url; ?>/img/favicon.ico" type="image/x-icon">
+        <?php // echo $this->headTitle($apps_var['app_title'])->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php
+        echo        $this->headMeta()
+                    ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                    ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php
+        echo $this->headLink()
+                ->prependStylesheet($this->basePath('css/style.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap.min.css'));
+        ?>
+
+        <script>
+            var root            = '<?php echo $base_url; ?>';
+            var min_clave       = <?php echo $apps_var_usuario['contrasenias']['min']; ?>;
+            var max_clave       = <?php echo $apps_var_usuario['contrasenias']['max']; ?>;
+            var tam_captcha     = <?php echo $apps_var_usuario['captcha']['tamano_codigo']; ?>;
+            var min_dni         = <?php echo $apps_var_usuario['documento_identidad']['min']; ?>;
+            var max_dni         = <?php echo $apps_var_usuario['documento_identidad']['max']; ?>;
+            var max_correo      = <?php echo $apps_var_usuario['general']['correo']; ?>;
+            var token_sms       = <?php echo $apps_var_usuario['general']['token_sms']; ?>;
+        </script>
+    </head>
+    <body class="body_bg">
+        <?php
+        if ($info["browser"] === "IE")
+        {
+            ?>
+            <div class="row" style="background-color: #EDD0D0; border-color: #EDD0D0;height: 50px;text-align:center;"><h3 style="color:#CE141F !important;">Advertencia:  Este sitio web funciona mejor con Mozilla Firefox  y Chrome.</h3></div>
+            <?php
+        }
+        ?>
+        <?php ?>
+
+        <div class="row row-fluid">
+            <div class="col-md-12 banner_top_titulo">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <a href="<?php echo $base_url; ?>" class="text-center">
+                        <img class="img-responsive center-block img_logo" src="<?php echo $base_url; ?>/img/indago.png"/>
+                    </a>  
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <a target="_blank" href="http://www.minedu.gob.pe/" class="text-center">
+                        <img class="img-responsive center-block" src="<?php echo $base_url; ?>/img/logo_ministerio_educacion.gif"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row barra_top"></div>
+        <div class="container-fluid">
+            <?php echo $this->content; ?>
+        </div> <!-- /container -->
+        <footer class="footer">
+            <div class="container" style="padding: 10px">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                    <p class="footer_color">
+                         &copy; Derechos reservados <?php echo date('Y'); ?> - MINEDU – AP Móvil v.1.0
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <?php echo $this->inlineScript() ?>
+    </body>
+    <!-- Scripts -->
+    <?php
+    echo $this->headScript()
+            ->prependFile($this->basePath('js/lib/UsuarioJS/naruto.js'))
+            ->prependFile($this->basePath('js/lib/UsuarioJS/kakashi.min.js'))
+            ->prependFile($this->basePath('js/lib/UsuarioJS/bootbox.min.js'))
+            ->prependFile($this->basePath('js/lib/UsuarioJS/login.js?v=' . md5(time())))
+            ->prependFile($this->basePath('js/lib/porigon.js'))
+            ->prependFile($this->basePath('js/lib/safify.js'))
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/lib/UsuarioJS/captcha.js'))
+            ->prependFile($this->basePath('js/lib/BaseXJS/jquery.filter_input.js'))
+            ->prependFile($this->basePath('js/lib/BaseXJS/jquery.validate.js'))
+            ->prependFile($this->basePath('js/lib/BaseXJS/BaseX.js?v=' . md5(time())))
+            ->prependFile($this->basePath('js/jquery.min.js'))
+            ->prependFile($this->basePath('js/app/_strings.js'))
+            ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+    ;
+    ?>
+</html>

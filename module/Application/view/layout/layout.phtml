@@ -1,0 +1,57 @@
+<?php
+$apps_var = $this->apps_user;
+$base_url = $this->basePath();
+?>
+
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <?php echo $this->headTitle($apps_var['app_title'])->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php
+//        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+        echo $this->headLink()
+                ->prependStylesheet($this->basePath('css/style.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        ?>
+        
+    </head>
+    <body class="body_bg">
+        <div class="row row-fluid">
+            <div class="col-md-12 banner_top_titulo">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <img class="img-responsive center-block img_logo" src="<?php echo $base_url; ?>/img/indago.png"/>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <a target="_blank" href="http://www.minedu.gob.pe/" class="text-center">
+                        <img class="img-responsive center-block" src="<?php echo $base_url; ?>/img/logo_ministerio_educacion.gif"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row barra_top"></div>
+        <div class="container-fluid">
+            <?php echo $this->content; ?>
+        </div> <!-- /container -->
+        <footer class="footer">
+            <div class="container" style="padding: 10px">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                    <p class="footer_color">
+                        <?php echo date('Y'); ?> &copy; Todos los derechos reservados
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>

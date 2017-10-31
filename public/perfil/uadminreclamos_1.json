@@ -1,0 +1,26 @@
+{
+    "menu": {
+        "items": [
+            {
+                "id": "mnuInicio",
+                "metodo": "menu_inicio",
+                "titulo": "Inicio"
+            }, {
+                "id": "mnuInstrumento",
+                "metodo": "menu_instrumento",
+                "titulo": "Instrumentos"
+            }, 
+             {
+                "id": "menuGraficos",
+                "metodo": "menu_graficos",
+                "titulo": "Reportes"
+            },
+            {
+                "id": "menuReportes",
+                "metodo": "menu_reportes",
+                "titulo": "Preguntas frecuentes"
+            }
+        ]
+    }
+}
+

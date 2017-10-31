@@ -1,0 +1,18 @@
+<script id="tpl_preguntas_frecuentes_content" type="text/x-handlebars-template"> 
+<div class="row">
+    <div class="panel-group" id="accordion">
+    {{#d}}
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" class="link_faq" data-parent="#accordion" href="#collapse_{{a}}">{{b}}</a>
+                </h4>
+            </div>
+            <div id="collapse_{{a}}" class="panel-collapse collapse">
+                <div class="panel-body">{{c}}</div>
+            </div>
+        </div>
+        {{/d}} 
+    </div> 
+</div>
+</script>

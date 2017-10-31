@@ -1,0 +1,8 @@
+
+<div class="col-lg-12">
+    <?php
+    $config = $this->apps_usuario;
+    $var = $this->apps_var;
+    echo $this->partial('form_login.phtml', ['apps_usuario' =>$config,'apps_var' => $var,'msgs' => $msg]);
+    ?> 
+</div>

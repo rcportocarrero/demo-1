@@ -1,0 +1,405 @@
+<style>
+    .form-horizontal .form-group {
+        margin-left: 0px !important; 
+        margin-right: 0px !important; 
+    }
+    div#tpl_info {
+        font-size: 12px;
+    }
+    @media (max-width: 992px){
+        .mtop_max992{
+            margin-top:15px;}
+    }
+
+    #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+    #sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+    /*html>body #sortable li { height: 40px; line-height: 1.2em; }*/
+    html>body #sortable li { min-height: 60px;
+    min-width: 500px; line-height: 1.2em; }
+    .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+
+    .ui-state-highlight { background: red; border-color: red; }
+
+    button.btn.btn-default.btn-sm {
+        margin-right: 0px !important;
+        float: right;
+    }
+
+    body {
+        counter-reset: item;
+    }
+    ol #sortable {
+        list-style: none;
+    }
+    #sortable li {
+        counter-increment: item;
+        margin-bottom: 5px;
+    }
+    #sortable li:before {
+        margin-right: 10px;
+        content: counter(item);
+        background: lightblue;
+        border-radius: 100%;
+        color: white;
+        width: 1.2em;
+        text-align: center;
+        display: inline-block;
+    }
+</style>
+<div class="row" style="margin-top: 20px;">
+    <div class="col-sm-6">
+        <ol class="breadcrumb">
+            <li><a href="">Inicio</a></li>
+            <li><a href="<?php echo $this->url('inicio', array('action' => 'index')); ?>">Configuracion</a></li>
+            <li class="active">Instrumentos</li>
+        </ol>
+    </div>  
+    <div class="col-sm-6" style="text-align: right;">
+    </div>  
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <ul class="nav nav-pills">
+            <li class="active"><a data-toggle="pill" href="#menu1">Registro</a></li>
+            <li><a data-toggle="pill" href="#menu2">Secciones</a></li>
+            <li><a data-toggle="pill" href="#menu3">Informantes</a></li>
+        </ul>
+        <br>
+        <br>
+        <div class="form-group">
+            <label class="control-label-login col-md-2">Id activo:</label>
+            <div class="col-md-4">
+                <input  type="text" name="id_instrumento_active" id="id_instrumento_active" class="form-control" value="0" disabled>                                    
+            </div>
+        </div>
+        <div class="tab-content">
+            <div id="menu1" class="tab-pane fade in active">
+                <br>
+                <br>
+                <form class="form-horizontal" id="frm_instrumento">
+                    <!--Panel registro de instrumento-->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Registrar instrumento</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label-login col-md-2">Estrategia:</label>
+                                <div class="col-md-4">
+                                    <select name="lista_estrategia" id="lista_estrategia" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <?php
+                                        foreach ($estrategia as $e) {
+                                            ?>
+                                            <option value="<?php echo $e['ID_TIPO_ESTRATEGIA']; ?>"><?php echo $e['NOMBRE']; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <label class="control-label-login col-md-2 mtop_max992">Intevención:</label>
+                                <div class="col-md-4">
+                                    <select name="lista_intervencion" id="lista_intervencion" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <?php
+                                        foreach ($intervencion as $i) {
+                                            ?>
+                                            <option value="<?php echo $i['ID_TIPO_INTERVENCION']; ?>"><?php echo $i['NOMBRE']; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label-login col-md-2">Nombre de Instrumento:</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" id="nombre_instrumento" name="nombre_instrumento" placeholder="Nombre de Instrumento">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label-login col-md-2">Descripción del Instrumento:</label>
+                                <div class="col-md-10">
+                                    <textarea class="form-control" rows="3" placeholder="Descripción del Instrumento" id="desc_instrumento" name="desc_instrumento" style="width:100%;"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label-login col-md-2">Ámbito:</label>
+                                <div class="col-md-4">
+                                    <select name="lista_ambito" id="lista_ambito" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <?php
+                                        foreach ($ambito as $d) {
+                                            ?>
+                                            <option value="<?php echo $d['ID_TIPO_AMBITO']; ?>"><?php echo $d['NOMBRE']; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <label class="control-label-login col-md-2 mtop_max992">Tipo de Instrumento:</label>
+                                <div class="col-md-4">
+                                    <select name="lista_tipoinstrumento" id="lista_tipoinstrumento" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <?php
+                                        foreach ($l_instrumento as $i) {
+                                            ?>
+                                            <option value="<?php echo $i['ID_TIPO_INSTRUMENTO']; ?>"><?php echo $i['NOMBRE']; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label-login col-md-2">Tipo Informante:</label>
+                                <div class="col-md-4">
+                                    <select name="lista_tipoinformante" id="lista_tipoinformante" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <?php
+                                        foreach ($l_informante as $i) {
+                                            ?>
+                                            <option value="<?php echo $i['ID_TIPO_INFORMANTE']; ?>"><?php echo $i['DESCRIPCION_INFORMANTE']; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <label class="control-label-login col-md-2 mtop_max992">Muestra:</label>
+                                <div class="col-md-4">
+                                    <select name="lista_muestra" id="lista_muestra" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <?php
+                                        foreach ($muestra as $i) {
+                                            ?>
+                                            <option value="<?php echo $i['ID_TIPO_MUESTRA']; ?>"><?php echo $i['NOMBRE']; ?></option>
+                                            <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label-login col-md-2">Inicio:</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control date" id="fec_inicio" name="fec_inicio" placeholder="FECHA INICIO">
+                                    <!--<input type="text" name="form-control" id="fec_inicio" name="fec_inicio" data-mask="00/00/0000" />-->
+                                </div>
+                                <label class="control-label-login col-md-2 mtop_max992">Fin:</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="fec_fin" name="fec_fin" placeholder="FECHA FIN">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-5">
+                                </div>
+                                <div class="col-md-7 text-right">
+                                    <button type="button" class="btn btn-login" id="btn_cancelar_ins" name="btn_cancelar_ins">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                        CANCELAR</button>
+                                    <button type="button" class="btn btn-login" id="btn_guardar_ins" name="btn_guardar_ins">
+                                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                                        GUARDAR</button>
+                                </div>
+                            </div> 
+                        </div> 
+                    </div> 
+                    <!--Fin Panel registro de instrumento-->
+                </form>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <br>
+                <br>
+                <form class="form-horizontal" id="frm_gen">
+                    <!--Panel primer paso-->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Paso1: Crear secciones y asignar un orden</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="question">Sección:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="frm_add_section" placeholder="Ingrese una nueva sección" value="">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn_primary_icons btn-md" id="save_new_group">
+                                        <span class="glyphicon glyphicon-plus-sign"></span>
+                                    </button>
+                                    <button type="button" class="btn btn_primary_icons btn-md" id="list_all_group">
+                                        <span class="glyphicon glyphicon-th-list"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="question">Texto de ayuda:</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="frm_add_section_helper" id="frm_add_section_helper" rows="3" maxlenght="300"></textarea>
+                                </div>
+                                <div class="col-sm-2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Panel 2do paso-->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Paso2: Crear preguntas y asignar un orden</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <ol id="sortable">
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-5">
+                                </div>
+                                <div class="col-md-7 text-right">
+                                    <button type="button" class="btn btn-login" id="btn_guardar_grupo" name="btn_guardar_grupo">
+                                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                                        GUARDAR</button>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6">
+                                    <div class="alert alert-success" id="success-alert" style="display:none">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <strong>Success! </strong>La pregunta se guardó correctamente.
+                                    </div>
+                                    <div class="alert alert-danger" id="danger-alert" style="display:none">
+                                        <button type="button" class="close" data-dismiss="alert">x</button>
+                                        <strong>Error! </strong>Ocurrió un error, por favor volver a intentarlo.
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="content_list_group">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="pwd">Elegir sección de preguntas:</label>
+                                    <div class="col-sm-10"> 
+                                        <select id="list_group_" class="form-control">
+                                            <option value="">--Seleccione--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="question">Pregunta:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="question" placeholder="Ingrese una pregunta">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="pwd">Elegir tipo de respuesta:</label>
+                                <div class="col-sm-10"> 
+                                    <select id="numppl" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <option value="a" >Text</option>
+                                        <option value="f">Textarea</option>
+                                        <option value="b">Radio</option>
+                                        <option value="c">Check</option>
+                                        <option value="d">Select</option>
+                                        <option value="e">Slider</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group"> 
+                                <div class="col-sm-offset-2 col-sm-10 text-right">
+                                    <button type="button" class="btn btn-login" id="save_frm_group">
+                                        <span class="glyphicon glyphicon-plus"></span> Agregar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Panel 3er paso-->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Paso3: Editar preguntas y asignar orden.</div>
+                        <div class="panel-body">
+                            <div id="content_out"></div>
+                            <div class="form-group"> 
+                                <div class="col-sm-offset-2 col-sm-10 text-right">
+                                    <button type="button" class="btn btn-login" id="save_all_frm_">
+                                        <span class="glyphicon glyphicon-floppy-disk"></span> Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fin div con paneles de preguntas-->
+                </form>
+            </div>
+            <div id="menu3" class="tab-pane fade">
+                <h3>Menu 3</h3>
+                <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Modal edit question -->
+<div class="modal fade" id="modal_edit_tmp" aria-hidden="true" style="overflow-y: hidden">
+    <div class="modal-dialog modal-lg" style="min-width: 200px; ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+                <h4 class="modal-title">Editar</h4>
+            </div>
+            <div class="modal-body" style="display: block; overflow-y: auto;">
+                <form class="form-horizontal">
+                    <input type="hidden" id="hdd_g_question">
+                    <input type="hidden" id="hdd_i_question">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="question">Pregunta:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="frm_edit_question" placeholder="Ingrese una respuesta" value="">
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="#" onclick="add_question_option_()"><span class="glyphicon glyphicon-plus-sign" style="font-size: 30px;"></span></a>
+                        </div>
+                    </div>
+                    <div id="content_edit_input">
+
+                    </div> 
+                    <div class="form-group">
+                        <div class="col-sm-12 text-right">
+                            <input type="button" class="btn btn-login" id="save_question" value="Aceptar"/>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit group -->
+<div class="modal fade" id="modal_edit_tmp" aria-hidden="true" style="overflow-y: hidden">
+    <div class="modal-dialog modal-lg" style="min-width: 200px; ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+                <h4 class="modal-title">Editar</h4>
+            </div>
+            <div class="modal-body" style="display: block; overflow-y: auto;">
+                <form class="form-horizontal">
+                    <div id="content_edit_groups">
+
+                    </div> 
+                    <div class="form-group">
+                        <div class="col-sm-12 text-right">
+                            <input type="button" class="btn btn-default" id="save_groups" value="Aceptar"/>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 

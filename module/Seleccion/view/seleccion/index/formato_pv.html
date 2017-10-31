@@ -1,0 +1,103 @@
+<script id="tpl_listado_resumen_content" type="text/x-handlebars-template"> 
+        <input type="hidden" id="emp_t_hd" id="emp_t_hd" value="" />
+        <input type="hidden" id="emp_t_res" id="emp_t_res" value="" />
+        <div class="row">
+	<div class="col col-sm-6" id="emp_t_informante" style="margin-bottom: 15px;"> </div> 
+        <div class="col col-sm-6" id="emp_t_ndoc" style="margin-bottom: 15px;">  </div>
+        <div class="col col-sm-12" id="emp_t_dreugel" style="margin-bottom: 15px;">  </div>
+        <div class="col col-sm-12" id="emp_t_ie" style="margin-bottom: 15px;">  </div>             
+        </div>
+	<div class="col col-sm-4">  
+    	    <ul class="nav nav-tabs2 nav-stacked text-center" id="ul_preg" role="tablist">
+                {{#instrumento.p}}
+                    <li id="li_paso_{{a}}" data-pre="{{a}}" role="presentation"><a href="#paso_{{a}}" aria-controls="paso_{{a}}" role="tab" data-toggle="tab" style="font-size:13px; text-align:left;">{{b}}</a></li>
+                {{/instrumento.p}} 
+                    <li id="li_resumen" role="presentation" class="active"><a href="#paso_resumen" aria-controls="paso_resumen" role="tab" data-toggle="tab" style="font-size:13px; text-align:left;">RESUMEN</a></li>
+            </ul>
+        </div>
+		
+        <div class="col col-sm-8">
+            <div class="row tab-content">
+            {{#instrumento.p}}
+                <div role="tabpanel" class="tab-pane fade" id="paso_{{a}}">
+                    <form id="frm_paso_{{a}}">
+                    <p style="color:#2FA7D3;">{{#ifInfo g }} <span class="glyphicon glyphicon-info-sign"></span> {{g}} {{/ifInfo}}</p>
+                    {{#f}}
+                        <div class="form-group padd_input col-md-12 col-sm-12 col-xs-12" style="padding: 0px !important;">
+                            <div class="col-sm-12" style="padding: 0px !important;">
+                                <label for="preg_{{a}}" style="font-weight: normal;">{{e}}.-{{b}} {{#ifInfo k }}<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="{{k}}" style="color:#2FA7D3;"></span>{{/ifInfo}}</label>
+                            </div>
+							
+                            <div class="col-lg-5 col-md-5 col-sm-5 preg_opt_" style="text-align: left;" data-tipo="{{g.a}}">
+                                {{#ifCond d "=="  'Vg' }}
+                                        <div class="btn-group" data-toggle="buttons">
+                                        {{#h}}
+                                                <label class="btn btn-primary"><input type="radio" name="optrd_{{c}}" id="opt_{{c}}_{{a}}"  value="{{a}}" autocomplete="off">{{b}}</label>
+                                        {{/h}}
+                                        </div>                                    
+                                {{/ifCond}}
+
+                                {{#ifCond d "=="  'qR' }}
+                                        {{#h}}                                
+                                        <div class="checkbox checkbox-primary">
+                                            <input id="opt_{{c}}_{{a}}" name="optchk_{{c}}" value="{{a}}" type="checkbox">
+                                            <label for="opt_{{c}}_{{a}}">
+                                                {{b}}
+                                            </label>
+                                        </div>            
+                                        {{/h}}
+                                {{/ifCond}}
+
+                                {{#ifCond d "=="  'am' }}
+                                        <select name="slct_{{a}}" id="slct_{{a}}" class="form-control">
+                                        {{#h}}
+                                                <option value="{{a}}">{{b}}</option>ñ
+                                        {{/h}}
+                                        </select>                                              
+                                {{/ifCond}}
+
+                                {{#ifCond d "=="  '75' }}
+                                        <input type="text" name="inpt_{{a}}" class="form-control" id="inpt_{{a}}" maxlenght="100">
+                                {{/ifCond}}
+
+                                {{#ifCond d "=="  'mR' }}
+                                        <textarea class="form-control" name="inptmult_{{a}}" id="inpt_mult_{{a}}" rows="3" maxlenght="300"></textarea>
+                                {{/ifCond}}
+
+                                {{#ifCond d "=="  'p4' }}   
+                                    {{#i}}
+                                     <input type="text" id="slctrango_{{f}}" name="slctrango_{{f}}_{{a}}" class="mySlider" value="" data-slider-min="0" data-slider-max="{{c}}" data-slider-step="1" data-slider-value="0" data-slider-selection="after" data-slider-tooltip="always" data-slider-responsive="true" />
+                                    {{/i}}
+                                {{/ifCond}}
+
+                                {{#ifCond g.a "=="  'Rw' }}
+                                        <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input">
+                                {{/ifCond}}
+                            </div>
+                        </div>
+                    {{/f}}
+                </form>
+                </div> 
+            {{/instrumento.p}} 
+                <div role="tabpanel" class="tab-pane fade active in" id="paso_resumen">
+                    {{#instrumento.p}}
+                        <div class="col-md-12" style="padding:5px;">{{b}}</div>
+                        <div class="col-md-12" data-li="{{a}}" style="padding:5px;">
+                        {{#f}}
+                            <a href="javascript:" onclick="link_group('{{c}}');" id="res_pre_{{a}}" class="btn btn-info" role="button">{{e}}</a> 
+                        {{/f}}
+                        </div>
+                    {{/instrumento.p}}
+		</div>
+	</div>
+       </div>  
+	</div>
+	<div class="row">
+            <ul class="list-inline pull-right">
+                <li><button type="button" class="btn btn-login prev-step" id="btn_preview_">Atrás</button></li>
+                <li><button type="button" class="btn btn-login next-step" id="btn_next_">Siguiente</button></li>
+                <li><button type="button" class="btn btn-login last-step" id="btn_finalizar" disabled>Cerrar</button></li>
+            </ul>                
+    </div>
+  
+</script>

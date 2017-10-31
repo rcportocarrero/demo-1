@@ -1,0 +1,9 @@
+<?php
+    $nombre = $this->nombre_pdf;
+    header("Content-Type: application/pdf");
+    header("Cache-Control: no-cache, must-revalidate");
+    header('Content-Disposition: attachment; filename=' . $nombre);
+    echo $data_pdf;
+    exit();
+
+?>
